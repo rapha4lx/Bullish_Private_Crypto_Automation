@@ -29,3 +29,38 @@ const checkURL = () => {
   }
   return 0;
 };
+
+class ExtensionService {
+
+  static getLocal = (key) => {
+      return new Promise((resolve, reject) => {
+          chrome.storage.local.get([key], (result) => {
+              if (chrome.runtime.lastError)
+                  reject(chrome.runtime.lastError);
+
+              const researches = result ?? null;
+              resolve(researches);
+          });
+      });
+  }
+
+  static setLocal = async (key, value) => {
+      return new Promise((resolve, reject) => {
+          chrome.storage.local.set({ [key]: value }, () => {           
+              if (chrome.runtime.lastError)
+                  reject(chrome.runtime.lastError);
+              resolve(value);
+          });
+      });
+  }
+
+  // static clearPages = () => {
+  //     return toPromise((resolve, reject) => {
+  //         chrome.storage.local.remove([PAGES_KEY], () => {
+  //             if (chrome.runtime.lastError)
+  //                 reject(chrome.runtime.lastError);
+  //             resolve();
+  //         });
+  //     });
+  // }
+}

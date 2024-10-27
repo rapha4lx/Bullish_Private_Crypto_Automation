@@ -1,16 +1,13 @@
 
 const bRunningState = document.querySelector("#bRunningState");
-console.log(bRunningState);
 
-chrome.storage.local.get(["bRunning"]).then((result) => {
-  console.log("Value is: " + result.bRunning);
-  bRunningState.checked = result.bRunning;
-});
+window.onload = async function (){
+  let bRunning_local = await ExtensionService.getLocal('bRunning')
+  if (bRunning_local !== null)
+    bRunningState.checked = bRunning_local.bRunning
+}
 
-bRunningState.addEventListener('click', () => {
+bRunningState.addEventListener('click', async () => {
   let state = bRunningState.checked;
-  chrome.storage.local.set({bRunning: state}).then((value) => {
-    console.log("value is set");
-    console.log(state);
-  });
+  await ExtensionService.setLocal('bRunning', state)
 })
